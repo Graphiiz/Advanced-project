@@ -75,7 +75,7 @@ def create_trainset(dataset_name):
         x_train_mean = np.mean(x_train_rescaled)
         x_train_std = np.std(x_train_rescaled)
 
-        transform_train = transforms.Compose([transforms.ToTensor(),transforms.Normalize(x_train_mean, x_train_std)])
+        transform_train = transforms.Compose([transforms.Pad(padding=4,padding_mode='edge'),transforms.ToTensor(),transforms.Normalize(x_train_mean, x_train_std)])
         trainset = MNIST(x_train,y_train,transform_train)
         trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True, num_workers=1,pin_memory=True)
         return trainloader
@@ -96,7 +96,7 @@ def create_testset(dataset_name):
         x_test_mean = np.mean(x_test_rescaled)
         x_test_std = np.std(x_test_rescaled)
         
-        transform_test = transforms.Compose([transforms.ToTensor(),transforms.Normalize(x_test_mean, x_test_std)])
+        transform_test = transforms.Compose([transforms.Pad(padding=4,padding_mode='edge'),transforms.ToTensor(),transforms.Normalize(x_test_mean, x_test_std)])
         testset = MNIST(x_train,y_train,transform_test)
         testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=False, num_workers=1,pin_memory=True)
         return testloader
