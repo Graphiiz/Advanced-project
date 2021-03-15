@@ -109,10 +109,7 @@ def create_scheduler(model_name,optimizer):
      
 #main
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-if args.model is not None:
-    if (args.test or args.decomp) == False:
-        print('test mode or decomp mode is required')
-        exit(0)
+
 if args.train:
     if args.model is None:
         print('model type is required.')
