@@ -102,6 +102,6 @@ def create_testset(dataset_name):
         y_test = y_test.astype(np.long)
         
         transform_test = transforms.Compose([transforms.ToTensor(),transforms.Normalize(x_test_mean, x_test_std),transforms.Pad(padding=2,padding_mode='edge')])
-        testset = MNIST(x_train,y_train,transform_test)
+        testset = MNIST(x_test,y_test,transform_test)
         testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=False, num_workers=1,pin_memory=True)
         return testloader
