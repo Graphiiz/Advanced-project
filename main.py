@@ -98,9 +98,9 @@ def test(epoch):
         torch.save(state, './checkpoint/ckpt.pth')
         best_acc = acc
 
-def create_scheduler(model_name):
+def create_scheduler(model_name,optimizer):
     if model_name.lower() == 'lenet':
-        scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=args.step_size, gamma=args.gamma)
+        scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[2,5,8,12,13,14], gamma=0.5)
         return scheduler
     else:
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.5)
@@ -121,7 +121,7 @@ if args.train:
     model = model.create_model(args.model).to(device)
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     criterion = nn.CrossEntropyLoss()
-    scheduler = create_scheduler(args.model)
+    scheduler = create_scheduler(args.model,optimizer)
     print('Start training the model...')
     print('==> Preparing data..')
     trainloader = dataset.create_trainset(args.dataset)
