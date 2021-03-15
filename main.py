@@ -65,8 +65,8 @@ def train(epoch):
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
 
-    print(f'finish epoch #{epoch}')
-    print(f'Training accuracy = {correct/total}')
+    print(epoch) #print epoch
+    print(correct/total) #print train acc
     
 def test(epoch):
     global best_acc #declare this allow you make changes to global variable
@@ -84,10 +84,12 @@ def test(epoch):
         _, predicted = outputs.max(1)
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
-    print(f'Test accuracy = {correct/total}')
+
+    print(correct/total) #print test acc
+
     acc = correct/len(testloader)
     if acc > best_acc:
-        print('Saving..')
+        #print('Saving..')
         state = {
             'model': model.state_dict(),
             'acc': acc,
