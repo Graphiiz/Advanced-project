@@ -75,7 +75,9 @@ def create_trainset(dataset_name):
         x_train_mean = np.mean(x_train_rescaled)
         x_train_std = np.std(x_train_rescaled)
 
-        transform_train = transforms.Compose([transforms.ToTensor(),transforms.Normalize(x_train_mean, x_train_std),transforms.Pad(padding=4,padding_mode='edge')]) 
+        y_train = y_train.astype(np.long) #since we create dataset downloaded from tensorflow not pytorch, this cast change type from uint8 to long whuch is compatible with loss function
+
+        transform_train = transforms.Compose([transforms.ToTensor(),transforms.Normalize(x_train_mean, x_train_std),transforms.Pad(padding=2,padding_mode='edge')]) 
         #must be in order, eg. ToTensor() come first because the following transforms require tensor type data.
         trainset = MNIST(x_train,y_train,transform_train)
         trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True, num_workers=1,pin_memory=True)
@@ -96,8 +98,10 @@ def create_testset(dataset_name):
         x_test_rescaled = x_test/255
         x_test_mean = np.mean(x_test_rescaled)
         x_test_std = np.std(x_test_rescaled)
+
+        y_test = y_test.astype(np.long)
         
-        transform_test = transforms.Compose([transforms.ToTensor(),transforms.Normalize(x_test_mean, x_test_std),transforms.Pad(padding=4,padding_mode='edge')])
+        transform_test = transforms.Compose([transforms.ToTensor(),transforms.Normalize(x_test_mean, x_test_std),transforms.Pad(padding=2,padding_mode='edge')])
         testset = MNIST(x_train,y_train,transform_test)
         testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=False, num_workers=1,pin_memory=True)
         return testloader
