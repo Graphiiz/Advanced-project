@@ -123,16 +123,16 @@ if args.train:
     if args.model is None:
         print('model type is required.')
         exit(0)
-    print('Create model...')
-    model = model.create_model(args.model).to(device)
-    optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = args.weight_decay)
-    criterion = nn.CrossEntropyLoss()
-    print('Start training the model...')
-    print('==> Preparing data..')
-    trainloader = dataset.create_trainset(args.dataset)
-    testloader = dataset.create_testset(args.dataset)
-    print('==> Datasets are ready')
     if args.model.lower() == 'lenet':
+        print('Create model...')
+        model = model.create_model(args.model).to(device)
+        optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = args.weight_decay)
+        criterion = nn.CrossEntropyLoss()
+        print('Start training the model...')
+        print('==> Preparing data..')
+        trainloader = dataset.create_trainset(args.dataset)
+        testloader = dataset.create_testset(args.dataset)
+        print('==> Datasets are ready')
         scheduler = create_scheduler(args.model,optimizer)
         num_epoch = args.epoch
         for epoch in range(num_epoch):
@@ -140,6 +140,15 @@ if args.train:
             test(epoch)
             scheduler.step()
     elif args.model.lower() == 'vgg13':
+        print('Create model...')
+        model = model.create_model(args.model).to(device)
+        optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = args.weight_decay)
+        criterion = nn.CrossEntropyLoss()
+        print('Start training the model...')
+        print('==> Preparing data..')
+        trainloader = dataset.create_trainset(args.dataset)
+        testloader = dataset.create_testset(args.dataset)
+        print('==> Datasets are ready')
         scheduler = create_scheduler(args.model,optimizer)
         num_epoch = args.epoch
         for epoch in range(num_epoch):
