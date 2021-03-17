@@ -44,6 +44,8 @@ args = parser.parse_args()
 
 best_acc = 0
 
+current_acc = 0 #for ReduceLROnPlateau scheduler
+
 #function
 
 #train
@@ -71,6 +73,7 @@ def train(epoch):
     
 def test(epoch):
     global best_acc #declare this allow you make changes to global variable
+    global current_acc
     model.eval()
     test_loss = 0 #to be used later, don't use it yet
     correct = 0
@@ -89,6 +92,7 @@ def test(epoch):
     print(correct/total) #print test acc
 
     acc = correct/len(testloader)
+    current_acc = acc
     if acc > best_acc:
         #print('Saving..')
         state = {
@@ -106,7 +110,7 @@ def create_scheduler(model_name,optimizer):
         scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[2,5,8,12,13,14], gamma=0.5)
         return scheduler
     elif model_name.lower() == 'vgg13':
-        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=10, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08, verbose=False)
+        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=10, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08, verbose=False)
     else:
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.5)
         return scheduler
@@ -129,11 +133,20 @@ if args.train:
     trainloader = dataset.create_trainset(args.dataset)
     testloader = dataset.create_testset(args.dataset)
     print('==> Datasets are ready')
-    num_epoch = args.epoch
-    for epoch in range(num_epoch):
-        train(epoch)
-        test(epoch)
-        scheduler.step()
+    if args.model.lower() == 'lenet':
+        num_epoch = args.epoch
+        for epoch in range(num_epoch):
+            train(epoch)
+            test(epoch)
+            scheduler.step()
+    elif args.model.lower() == 'vgg13':
+        num_epoch = args.epoch
+        for epoch in range(num_epoch):
+            train(epoch)
+            test(epoch)
+            scheduler.step(current_acc)
+    else:
+        exit(0)
 
 if args.test:
     if args.model_path is None: 
