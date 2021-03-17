@@ -111,6 +111,7 @@ def create_scheduler(model_name,optimizer):
         return scheduler
     elif model_name.lower() == 'vgg13':
         scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=10, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08, verbose=False)
+        return scheduler
     else:
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.5)
         return scheduler
