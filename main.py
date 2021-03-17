@@ -127,19 +127,20 @@ if args.train:
     model = model.create_model(args.model).to(device)
     optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = args.weight_decay)
     criterion = nn.CrossEntropyLoss()
-    scheduler = create_scheduler(args.model,optimizer)
     print('Start training the model...')
     print('==> Preparing data..')
     trainloader = dataset.create_trainset(args.dataset)
     testloader = dataset.create_testset(args.dataset)
     print('==> Datasets are ready')
     if args.model.lower() == 'lenet':
+        scheduler = create_scheduler(args.model,optimizer)
         num_epoch = args.epoch
         for epoch in range(num_epoch):
             train(epoch)
             test(epoch)
             scheduler.step()
     elif args.model.lower() == 'vgg13':
+        scheduler = create_scheduler(args.model,optimizer)
         num_epoch = args.epoch
         for epoch in range(num_epoch):
             train(epoch)
