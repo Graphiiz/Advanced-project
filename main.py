@@ -35,6 +35,7 @@ parser.add_argument('--gamma', default=0.5, type=int, help='gamma for learning r
 parser.add_argument('--step-size', default=50, type=int, dest='step_size',help='gamma for learning rate scheduler')
 parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
 parser.add_argument('--momentum', default=0.9, type=float, help='momentum')
+parser.add_argument('--weight-decay', default=0.0, type=float, dest='weight_decay', help='weight decay factor for sgd')
 parser.add_argument('--test', action='store_true', help='test mode, model is required')
 #parser.add_argument('--resume', '-r', action='store_true',help='resume from checkpoint')
 parser.add_argument('--model-path', dest='model_path', type=str,help='path to saved model or .pth file, required when resume training')
@@ -104,6 +105,8 @@ def create_scheduler(model_name,optimizer):
     if model_name.lower() == 'lenet':
         scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[2,5,8,12,13,14], gamma=0.5)
         return scheduler
+    elif model_name.lower() == 'vgg13':
+        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=10, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08, verbose=False)
     else:
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.5)
         return scheduler
@@ -118,7 +121,7 @@ if args.train:
         exit(0)
     print('Create model...')
     model = model.create_model(args.model).to(device)
-    optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
+    optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = args.weight_decay)
     criterion = nn.CrossEntropyLoss()
     scheduler = create_scheduler(args.model,optimizer)
     print('Start training the model...')

@@ -88,7 +88,7 @@ def create_testset(dataset_name):
         transform_test = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 
         testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
-        testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=False, num_workers=1,pin_memory=True)
+        testloader = torch.utils.data.DataLoader(testset, batch_size=64, shuffle=False, num_workers=1,pin_memory=True)
 
         return testloader
 
