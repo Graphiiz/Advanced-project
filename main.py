@@ -110,7 +110,7 @@ def create_scheduler(model_name,optimizer):
         scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[2,5,8,12,13,14], gamma=0.5)
         return scheduler
     elif model_name.lower() == 'vgg13':
-        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=10, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08, verbose=False)
+        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=5, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0.0000001, eps=1e-08, verbose=False)
         return scheduler
     else:
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.5)
@@ -150,12 +150,12 @@ if args.train:
         trainloader = dataset.create_trainset(args.dataset)
         testloader = dataset.create_testset(args.dataset)
         print('==> Datasets are ready')
-        #scheduler = create_scheduler(args.model,optimizer)
+        scheduler = create_scheduler(args.model,optimizer)
         num_epoch = args.epoch
         for epoch in range(num_epoch):
             train(epoch)
             test(epoch)
-            #scheduler.step(current_acc)
+            scheduler.step(current_acc)
     else:
         exit(0)
 
