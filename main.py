@@ -150,12 +150,12 @@ if args.train:
         trainloader = dataset.create_trainset(args.dataset)
         testloader = dataset.create_testset(args.dataset)
         print('==> Datasets are ready')
-        scheduler = create_scheduler(args.model,optimizer)
+        #scheduler = create_scheduler(args.model,optimizer)
         num_epoch = args.epoch
         for epoch in range(num_epoch):
             train(epoch)
             test(epoch)
-            scheduler.step(current_acc)
+            #scheduler.step(current_acc)
     else:
         exit(0)
 
