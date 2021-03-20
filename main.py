@@ -110,8 +110,11 @@ def create_scheduler(model_name,optimizer):
         scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[2,5,8,12,13,14], gamma=0.5)
         return scheduler
     elif model_name.lower() == 'vgg13':
-        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=5, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0.0000001, eps=1e-08, verbose=False)
+        scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.1, patience=20, threshold=0.0001, threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08, verbose=False)
         return scheduler
+    elif model_name.lower() == 'resnet20':
+        scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[80,160,240], gamma=0.1)
+        return scheduler    
     else:
         scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=50, gamma=0.5)
         return scheduler
@@ -131,7 +134,7 @@ if args.train:
         criterion = nn.CrossEntropyLoss()
         print('Start training the model...')
         print('==> Preparing data..')
-        trainloader = dataset.create_trainset(args.dataset)
+        trainloader = dataset.create_trainset(args.dataset,64)
         testloader = dataset.create_testset(args.dataset)
         print('==> Datasets are ready')
         scheduler = create_scheduler(args.model,optimizer)
@@ -147,7 +150,7 @@ if args.train:
         criterion = nn.CrossEntropyLoss()
         print('Start training the model...')
         print('==> Preparing data..')
-        trainloader = dataset.create_trainset(args.dataset)
+        trainloader = dataset.create_trainset(args.dataset,256)
         testloader = dataset.create_testset(args.dataset)
         print('==> Datasets are ready')
         scheduler = create_scheduler(args.model,optimizer)
@@ -156,6 +159,22 @@ if args.train:
             train(epoch)
             test(epoch)
             scheduler.step(current_acc)
+    elif args.model.lower() == 'resnet20':
+        print('Create model...')
+        model = model.create_model(args.model).to(device)
+        optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = args.weight_decay)
+        criterion = nn.CrossEntropyLoss()
+        print('Start training the model...')
+        print('==> Preparing data..')
+        trainloader = dataset.create_trainset(args.dataset,128)
+        testloader = dataset.create_testset(args.dataset)
+        print('==> Datasets are ready')
+        scheduler = create_scheduler(args.model,optimizer)
+        num_epoch = args.epoch
+        for epoch in range(num_epoch):
+            train(epoch)
+            test(epoch)
+            scheduler.step()
     else:
         exit(0)
 

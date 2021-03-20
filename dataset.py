@@ -57,13 +57,13 @@ class MNIST(data.Dataset):
         return (self.X[idx],self.y[idx])
 
     
-def create_trainset(dataset_name):
+def create_trainset(dataset_name, batch_size):
     if dataset_name.lower() == 'cifar10':
         transform_train = transforms.Compose([transforms.RandomCrop(32, padding=4),transforms.RandomHorizontalFlip(),
                           transforms.ToTensor(),transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))])
 
         trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
-        trainloader = torch.utils.data.DataLoader(trainset, batch_size=256, shuffle=True, num_workers=1,pin_memory=True)
+        trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=1,pin_memory=True)
 
         return trainloader
 
@@ -80,7 +80,7 @@ def create_trainset(dataset_name):
         transform_train = transforms.Compose([transforms.ToTensor(),transforms.Normalize(x_train_mean, x_train_std),transforms.Pad(padding=2,padding_mode='edge')]) 
         #must be in order, eg. ToTensor() come first because the following transforms require tensor type data.
         trainset = MNIST(x_train,y_train,transform_train)
-        trainloader = torch.utils.data.DataLoader(trainset, batch_size=64, shuffle=True, num_workers=1,pin_memory=True)
+        trainloader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, num_workers=1,pin_memory=True)
         return trainloader
 
 def create_testset(dataset_name):
