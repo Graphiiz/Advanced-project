@@ -37,7 +37,7 @@ cfg = {
 class VGG(nn.Module):
     def __init__(self):
           super(VGG, self, name='VGG16').__init__()
-          self.name = name.upper()
+          self.name = name
           self.features = self.make_layers()
           self.fc1 = nn.Linear(512,10)
 
@@ -48,9 +48,10 @@ class VGG(nn.Module):
         out = F.softmax(out,dim=1)
         return out
 
-    def make_layers(self,config = cfg[self.name]):
+    def make_layers(self):
         in_channels = 3
         layers = []
+        config = cfg[self.name]
         for c in config:
             if c == 'M':
                 layers += [nn.MaxPool2d(2,2)]
