@@ -144,7 +144,7 @@ if args.train:
     trainloader = dataset.create_trainset(args.dataset,args.batch_size)
     testloader = dataset.create_testset(args.dataset)
 
-    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[2,5,8,12,13,14], gamma=args.gamma)
+    scheduler = optim.lr_scheduler.MultiStepLR(optimizer, milestones=[2,5,8,12], gamma=args.gamma)
 
     num_epoch = args.epoch
 
