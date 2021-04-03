@@ -54,14 +54,12 @@ count_reduce = 0 #count the number of decreases of lr due to ReduceLROnPlateau s
 
 #train
 def train(epoch,scheduler,optimizer):
-    global count_reduce
     model.to(device)
     model.train()
     train_loss = 0 #to be used later, don't use it yet
     correct = 0
     total = 0
     for batch_idx, (inputs, targets) in enumerate(trainloader):
-
 
         inputs, targets = inputs.to(device), targets.to(device)
         optimizer.zero_grad()
@@ -162,7 +160,7 @@ if args.train:
     test_acc_log = []
 
     for epoch in range(num_epoch):
-        
+
         tracked_lr = optimizer.param_groups[0]['lr']
 
         train_loss, train_acc = train(epoch,scheduler,optimizer)
