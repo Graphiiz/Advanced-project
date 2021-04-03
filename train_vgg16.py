@@ -55,7 +55,6 @@ count_reduce = 0 #count the number of decreases of lr due to ReduceLROnPlateau s
 #train
 def train(epoch,scheduler,optimizer):
     global count_reduce
-    global current_acc
     model.to(device)
     model.train()
     train_loss = 0 #to be used later, don't use it yet
@@ -63,7 +62,6 @@ def train(epoch,scheduler,optimizer):
     total = 0
     for batch_idx, (inputs, targets) in enumerate(trainloader):
 
-        tracked_lr = optimizer.param_groups[0]['lr']
 
         inputs, targets = inputs.to(device), targets.to(device)
         optimizer.zero_grad()
@@ -76,10 +74,6 @@ def train(epoch,scheduler,optimizer):
         _, predicted = outputs.max(1)
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
-        scheduler.step(current_acc)#track current acc and do step() here
-
-        if optimizer.param_groups[0]['lr'] < tracked_lr:
-            count_reduce += 1
 
 
     print(epoch) #print epoch
@@ -168,12 +162,19 @@ if args.train:
     test_acc_log = []
 
     for epoch in range(num_epoch):
+        
+        tracked_lr = optimizer.param_groups[0]['lr']
+
         train_loss, train_acc = train(epoch,scheduler,optimizer)
         test_loss, test_acc = test_in_train(epoch)
+        scheduler.step(current_acc) #track current acc and do step() here
         train_loss_log.append(train_loss)
         test_loss_log.append(test_loss)
         train_acc_log.append(train_acc)
         test_acc_log.append(test_acc)
+
+        if optimizer.param_groups[0]['lr'] < tracked_lr:
+            count_reduce += 1
 
     log_dict = {'train_loss': train_loss_log, 'test_loss': test_loss_log,
                             'train_acc': train_acc_log, 'test_acc': test_acc_log}
