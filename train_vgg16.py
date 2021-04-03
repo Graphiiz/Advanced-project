@@ -75,7 +75,8 @@ def train(epoch,scheduler):
         _, predicted = outputs.max(1)
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
-        scheduler.step()
+        scheduler.step(current_acc)#track current acc and do step() here
+
         if scheduler.optimizer.defaults['lr'] < tracked_lr:
             count_reduce += 1
 
@@ -172,7 +173,6 @@ if args.train:
         test_loss_log.append(test_loss)
         train_acc_log.append(train_acc)
         test_acc_log.append(test_acc)
-        scheduler.step()
 
     log_dict = {'train_loss': train_loss_log, 'test_loss': test_loss_log,
                             'train_acc': train_acc_log, 'test_acc': test_acc_log}
