@@ -35,8 +35,8 @@ cfg = {
 }
 
 class VGG(nn.Module):
-    def __init__(self):
-          super(VGG, self, name='VGG16').__init__()
+    def __init__(self, name='VGG16'):
+          super(VGG, self).__init__()
           self.name = name
           self.features = self.make_layers()
           self.fc1 = nn.Linear(512,10)
