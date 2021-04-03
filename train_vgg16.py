@@ -119,7 +119,7 @@ def test_in_train(epoch):
         }
         if not os.path.isdir('checkpoint'):
             os.mkdir('checkpoint')
-        torch.save(state, './checkpoint/lenet_ckpt.pth')
+        torch.save(state, './checkpoint/vgg16_ckpt.pth')
         best_acc = acc
 
     return test_loss/len(testloader), correct/total
@@ -176,7 +176,7 @@ if args.train:
 
     log_dict = {'train_loss': train_loss_log, 'test_loss': test_loss_log,
                             'train_acc': train_acc_log, 'test_acc': test_acc_log}
-    with open(f'train_lenet.json', 'w') as outfile:
+    with open(f'train_vgg16.json', 'w') as outfile:
         json.dump(log_dict, outfile)
     
     state = {
@@ -186,7 +186,7 @@ if args.train:
         }
     if not os.path.isdir('checkpoint'):
         os.mkdir('checkpoint')
-    torch.save(state, './checkpoint/lenet_final_ckpt.pth')
+    torch.save(state, './checkpoint/vgg16_final_ckpt.pth')
 
     print(f'#lr reduction = {count_reduce}')
     
