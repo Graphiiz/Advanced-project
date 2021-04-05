@@ -194,13 +194,13 @@ if args.train:
             for g in optimizer.base_optimizer.param_groups:
                 g['lr'] = 0.0002
         elif epoch == 5:
-            for g in optimizer.param_groups:
+            for g in optimizer.base_optimizer.param_groups:
                 g['lr'] = 0.0001
         elif epoch == 8:
-            for g in optimizer.param_groups:
+            for g in optimizer.base_optimizer.param_groups:
                 g['lr'] = 0.00005
         elif epoch == 12:
-            for g in optimizer.param_groups:
+            for g in optimizer.base_optimizer.param_groups:
                 g['lr'] = 0.00001
         else:
             pass  
