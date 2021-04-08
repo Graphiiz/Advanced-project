@@ -83,14 +83,22 @@ def train(epoch,scheduler):
         inputs, targets = inputs.to(device), targets.to(device)
         optimizer.zero_grad()
         outputs = model(inputs)
+
+        #first forward-backward pass
         loss = criterion(outputs, targets)
         loss.backward()
-        optimizer.step()
+        optimizer.first_step(zero_grad=True)
         
-        train_loss += loss.item()
+        train_loss += loss.item() #compute for statistical purpose
+
+        #second forward-backward pass
+        criterion(model(inputs), targets).backward()
+        optimizer.second_step(zero_grad=True)
+    
         _, predicted = outputs.max(1)
         total += targets.size(0)
         correct += predicted.eq(targets).sum().item()
+
         scheduler.step()
         count_iter += 1
         count_special += 1
