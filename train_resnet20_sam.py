@@ -144,7 +144,7 @@ def test_in_train(epoch):
         }
         if not os.path.isdir('checkpoint'):
             os.mkdir('checkpoint')
-        torch.save(state, './checkpoint/resnet20_ckpt.pth')
+        torch.save(state, './checkpoint/resnet20_sam_ckpt.pth')
         best_acc = acc
 
     return test_loss/len(testloader), correct/total
@@ -224,7 +224,7 @@ if args.train:
         }
     if not os.path.isdir('checkpoint'):
         os.mkdir('checkpoint')
-    torch.save(state, './checkpoint/resnet20_final_ckpt.pth')
+    torch.save(state, './checkpoint/resnet20_final_sam_ckpt.pth')
     
 
 
