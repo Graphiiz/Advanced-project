@@ -37,7 +37,7 @@ parser = argparse.ArgumentParser(description='PyTorch CIFAR10')
 #train,test arguments
 parser.add_argument('--train', action='store_true',help='train mode')
 parser.add_argument('--dataset', default=None, type=str,help='dataset choices = ["MNIST","CIFAR10"]')
-parser.add_argument('--batch_size', default=128, type=str,help='dataset choices = ["MNIST","CIFAR10"]')
+parser.add_argument('--batch_size', default=128, type=int,help='dataset choices = ["MNIST","CIFAR10"]')
 #parser.add_argument('--epoch', default=20, type=int, help='number of epochs tp train for')
 parser.add_argument('--gamma', default=0.1, type=int, help='gamma for learning rate scheduler')
 parser.add_argument('--lr', default=0.1, type=float, help='learning rate')
