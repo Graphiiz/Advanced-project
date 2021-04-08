@@ -214,7 +214,7 @@ if args.train:
 
     log_dict = {'train_loss': train_loss_log, 'test_loss': test_loss_log,
                             'train_acc': train_acc_log, 'test_acc': test_acc_log, 'best_test_acc': max(test_acc_log)}
-    with open(f'train_resnet20.json', 'w') as outfile:
+    with open(f'train_resnet20_sam.json', 'w') as outfile:
         json.dump(log_dict, outfile)
     
     state = {
