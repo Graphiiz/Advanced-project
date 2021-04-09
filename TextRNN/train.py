@@ -65,7 +65,7 @@ if __name__=='__main__':
         print ("Epoch: {}".format(i))
         train_loss, train_acc, val_loss, val_acc, test_loss, test_acc = model.run_epoch(dataset.train_iterator, dataset.val_iterator, dataset.test_iterator, i)
 
-        train_losses.append(float(train_loss))
+        train_losses.append(float(train_loss)) #cast float tinto json saveable
         train_accuracies.append(float(train_acc))
 
         val_losses.append(float(val_loss))
@@ -84,10 +84,10 @@ if __name__=='__main__':
     with open(f'train_rnn.json', 'w') as outfile:
         json.dump(log_dict, outfile)
 
-    train_acc = evaluate_model(model, dataset.train_iterator)
-    val_acc = evaluate_model(model, dataset.val_iterator)
-    test_acc = evaluate_model(model, dataset.test_iterator)
+    # train_acc = evaluate_model(model, dataset.train_iterator)
+    # val_acc = evaluate_model(model, dataset.val_iterator)
+    # test_acc = evaluate_model(model, dataset.test_iterator)
 
-    print ('Final Training Accuracy: {:.4f}'.format(train_acc))
-    print ('Final Validation Accuracy: {:.4f}'.format(val_acc))
-    print ('Final Test Accuracy: {:.4f}'.format(test_acc))
+    # print ('Final Training Accuracy: {:.4f}'.format(train_acc))
+    # print ('Final Validation Accuracy: {:.4f}'.format(val_acc))
+    # print ('Final Test Accuracy: {:.4f}'.format(test_acc))
