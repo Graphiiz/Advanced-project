@@ -82,7 +82,7 @@ class TextRNN(nn.Module):
             y_pred = self.__call__(x)
             loss = self.loss_op(y_pred, y)
             #first step
-            loss.backward()
+            loss.backward(retain_graph=True)
             losses.append(loss.data.cpu().numpy())
             self.optimizer.first_step(zero_grad=True)
             
