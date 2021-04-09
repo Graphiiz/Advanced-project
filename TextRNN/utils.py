@@ -105,7 +105,7 @@ def evaluate_model(model, iterator):
     all_preds = []
     all_y = []
     test_loss = 0
-    losses = 0
+    losses = []
     test_acc = 0
     for idx,batch in enumerate(iterator):
         if torch.cuda.is_available():
@@ -118,12 +118,12 @@ def evaluate_model(model, iterator):
         y_pred = model(x)
 
         loss = model.loss_op(y_pred, y)
-        losses += (loss.data.cpu())
+        losses.append(loss.data.cpu().numpy())
 
         predicted = torch.max(y_pred.cpu().data, 1)[1] + 1
         all_preds.extend(predicted.numpy())
         all_y.extend(batch.label.numpy())
     
     test_acc = accuracy_score(all_y, np.array(all_preds).flatten())
-    test_loss = losses/len(iterator)
+    test_loss = np.mean(losses)
     return test_acc, test_loss

@@ -65,16 +65,16 @@ if __name__=='__main__':
         print ("Epoch: {}".format(i))
         train_loss, train_acc, val_loss, val_acc, test_loss, test_acc = model.run_epoch(dataset.train_iterator, dataset.val_iterator, dataset.test_iterator, i)
 
-        train_losses.append(train_loss)
-        train_accuracies.append(train_acc)
+        train_losses.append(float(train_loss))
+        train_accuracies.append(float(train_acc))
 
-        val_losses.append(val_loss)
-        val_accuracies.append(val_acc)
+        val_losses.append(float(val_loss))
+        val_accuracies.append(float(val_acc))
        
-        test_losses.append(test_loss)
-        test_accuracies.append(test_acc)
+        test_losses.append(float(test_loss))
+        test_accuracies.append(float(test_acc))
 
-        tracked_val = val_acc
+        #tracked_val = val_acc
 
         #scheduler.step(tracked_val)
 
