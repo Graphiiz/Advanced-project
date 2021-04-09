@@ -118,7 +118,7 @@ def evaluate_model(model, iterator):
         y_pred = model(x)
 
         loss = model.loss_op(y_pred, y)
-        losses.append(loss)
+        losses.append(loss.data.cpu().numpy())
 
         predicted = torch.max(y_pred.cpu().data, 1)[1] + 1
         all_preds.extend(predicted.numpy())
