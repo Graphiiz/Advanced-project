@@ -22,14 +22,14 @@ def initialize(seed: int):
 
 if __name__=='__main__':
     config = Config()
-    train_file = '../data/ag_news.train' #to be modified
+    train_file = '/ext3/Text-Classification-Models-Pytorch/data/ag_news.train' #to be modified
     if len(sys.argv) > 2:
         train_file = sys.argv[1]
-    test_file = '../data/ag_news.test' #to be modified
+    test_file = '/ext3/Text-Classification-Models-Pytorch/data/ag_news.test' #to be modified
     if len(sys.argv) > 3:
         test_file = sys.argv[2]
     
-    w2v_file = '../data/glove.840B.300d.txt' #to be modified
+    w2v_file = '/ext3/Text-Classification-Models-Pytorch/data/glove.840B.300d.txt' #to be modified
 
     initialize(seed=config.seed)
     
