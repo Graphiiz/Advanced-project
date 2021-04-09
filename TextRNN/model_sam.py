@@ -87,7 +87,7 @@ class TextRNN(nn.Module):
             self.optimizer.first_step(zero_grad=True)
             
             #second step
-            second_loss = self.loss_op(y_pred, y)
+            second_loss = self.loss_op(self(x), y)
             second_loss.backward()
             self.optimizer.second_step(zero_grad=True)
 
