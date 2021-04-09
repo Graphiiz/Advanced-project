@@ -86,12 +86,12 @@ class TextRNN(nn.Module):
             all_preds.extend(predicted.numpy())
             all_y.extend(batch.label.numpy())
     
-            if i % 100 == 0:
-                print("Iter: {}".format(i+1))
-                avg_train_loss = np.mean(losses)
-                train_losses.append(avg_train_loss)
-                print("\tAverage training loss: {:.5f}".format(avg_train_loss))
-                losses = []
+            # if i % 100 == 0:
+            #     print("Iter: {}".format(i+1))
+            #     avg_train_loss = np.mean(losses)
+            #     train_losses.append(avg_train_loss)
+            #     print("\tAverage training loss: {:.5f}".format(avg_train_loss))
+            #     losses = []
                 
                 # # Evalute Accuracy on validation set
                 # val_accuracy = evaluate_model(self, val_iterator)
