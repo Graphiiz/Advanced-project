@@ -59,7 +59,7 @@ class TextRNN(nn.Module):
     def run_epoch(self, train_iterator, val_iterator, test_iterator, epoch):
         train_losses = 0
         #val_accuracies = []
-        losses = []
+        losses = 0
         #used for train acc
         all_preds = []
         all_y = []
@@ -79,7 +79,7 @@ class TextRNN(nn.Module):
             y_pred = self.__call__(x)
             loss = self.loss_op(y_pred, y)
             loss.backward()
-            losses.append(loss.data.cpu().numpy())
+            losses += (loss.data.cpu())
             self.optimizer.step()
 
             predicted = torch.max(y_pred.cpu().data, 1)[1] + 1
@@ -98,7 +98,7 @@ class TextRNN(nn.Module):
                 # print("\tVal Accuracy: {:.4f}".format(val_accuracy))
                 # self.train()
 
-        train_losses = np.mean(losses)
+        train_losses = losses/len(train_iterator)
         train_accuracy = accuracy_score(all_y, np.array(all_preds).flatten())
 
         val_accuracy, val_loss = evaluate_model(self, val_iterator)
