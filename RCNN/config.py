@@ -2,10 +2,10 @@
 
 class Config(object):
     embed_size = 300
-    hidden_layers = 1
+    hidden_layers = 2
     hidden_size = 64
     output_size = 4
-    max_epochs = 15
+    max_epochs = 100
     hidden_size_linear = 64
     lr = 0.5
     batch_size = 128
