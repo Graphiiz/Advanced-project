@@ -79,7 +79,7 @@ if __name__=='__main__':
 
     log_dict = {'train_loss': train_losses, 'test_loss': test_losses, 'val_loss': val_losses, 'val_acc': val_accuracies,
                             'train_acc': train_accuracies, 'test_acc': test_accuracies, 'best_test_acc': max(test_accuracies),
-                            'best_val_acc': max(val_accuracies), 'config': config}
+                            'best_val_acc': max(val_accuracies)}
     with open(f'train_rcnn.json', 'w') as outfile:
         json.dump(log_dict, outfile)
 
