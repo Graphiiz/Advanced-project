@@ -207,7 +207,9 @@ if args.train:
             pass  
 
     log_dict = {'train_loss': train_loss_log, 'test_loss': test_loss_log,
-                            'train_acc': train_acc_log, 'test_acc': test_acc_log, 'best_test_acc': max(test_acc_log)}
+                            'train_acc': train_acc_log, 'test_acc': test_acc_log, 'best_test_acc': max(test_acc_log),
+                            'batch_size': args.batch_size, 'lr': args.lr, 'momentum': args.momentum, 'wd': args.weight_decay,
+                            'seed': args.seed, 'gamma': args.gamma, 'scheduler': 'paper', 'epoch': args.epoch, 'rho': args.rho }
     with open(f'train_lenet_sam.json', 'w') as outfile:
         json.dump(log_dict, outfile)
     
