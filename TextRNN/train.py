@@ -42,13 +42,13 @@ if __name__=='__main__':
     if torch.cuda.is_available():
         model.cuda()
     model.train()
-    optimizer = optim.SGD(model.parameters(), lr=config.lr, momentum=config.momentum)
+    optimizer = optim.SGD(model.parameters(), lr=config.lr, momentum=config.momentum, weight_decay=config.weight_decay)
 
     NLLLoss = nn.NLLLoss()
     model.add_optimizer(optimizer)
     model.add_loss_op(NLLLoss)
 
-    #scheduler = optim.lr_scheduler.CosineAnnealingLR(model.optimizer, T_max=config.max_epochs)
+    scheduler = optim.lr_scheduler.CosineAnnealingLR(model.optimizer, T_max=config.max_epochs)
     ##############################################################
     
     train_losses = []
