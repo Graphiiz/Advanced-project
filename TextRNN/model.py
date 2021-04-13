@@ -68,8 +68,8 @@ class TextRNN(nn.Module):
         # if (epoch == int(self.config.max_epochs/3)) or (epoch == int(2*self.config.max_epochs/3)):
         #     self.reduce_lr()
 
-        if (epoch == int(self.config.max_epochs/4)) or (epoch == int(2*self.config.max_epochs/4)) or (epoch == int(3*self.config.max_epochs/4)):
-            self.reduce_lr()
+        # if (epoch == int(self.config.max_epochs/4)) or (epoch == int(2*self.config.max_epochs/4)) or (epoch == int(3*self.config.max_epochs/4)):
+        #     self.reduce_lr()
             
         for i, batch in enumerate(train_iterator):
             self.optimizer.zero_grad()
