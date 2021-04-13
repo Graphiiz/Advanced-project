@@ -13,5 +13,4 @@ class Config(object):
     dropout_keep = 0.5
     momentum = 0.9
     seed = 1
-    factor = 0.1
-    patience = 5
+    rho = 0.05
