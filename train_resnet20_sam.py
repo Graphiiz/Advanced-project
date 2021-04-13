@@ -46,6 +46,7 @@ parser.add_argument('--weight_decay', default=1e-4, type=float, help='weight dec
 parser.add_argument('--test', action='store_true', help='test mode, model is required')
 parser.add_argument('--model_path', type=str,help='path to saved model or .pth file, required when resume training')
 parser.add_argument('--seed', default=42, type=int, help='seed for random')
+parser.add_argument('--rho', default=0.05, type=float, help='rho for SAM')
 
 args = parser.parse_args()
 
@@ -179,7 +180,7 @@ if args.train:
 
     #sam
     base_optimizer = torch.optim.SGD
-    optimizer = SAM(model.parameters(), base_optimizer, lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
+    optimizer = SAM(model.parameters(), base_optimizer, rho=args.rho ,lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
 
     criterion = nn.CrossEntropyLoss()
 
