@@ -43,11 +43,12 @@ if __name__=='__main__':
         model.cuda()
     model.train()
     optimizer = optim.SGD(model.parameters(), lr=config.lr, momentum=config.momentum)
-    #scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=config.factor, patience=config.patience, threshold=0.0001, 
-                                                    #threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08, verbose=False)
+
     NLLLoss = nn.NLLLoss()
     model.add_optimizer(optimizer)
     model.add_loss_op(NLLLoss)
+
+    #scheduler = optim.lr_scheduler.CosineAnnealingLR(model.optimizer, T_max=config.max_epochs)
     ##############################################################
     
     train_losses = []
@@ -76,11 +77,13 @@ if __name__=='__main__':
 
         #tracked_val = val_acc
 
-        #scheduler.step(tracked_val)
+        #scheduler.step()
 
     log_dict = {'train_loss': train_losses, 'test_loss': test_losses, 'val_loss': val_losses, 'val_acc': val_accuracies,
                             'train_acc': train_accuracies, 'test_acc': test_accuracies, 'best_test_acc': max(test_accuracies),
-                            'best_val_acc': max(val_accuracies)}
+                            'best_val_acc': max(val_accuracies), 'hidden_layers': config.hidden_layers, 'hidden_size': config.hidden_size,
+                            'epoch': config.max_epochs, 'lr': config.lr, 'batch_size': config.batch_size, 'max_sen_len': config.max_sen_len,
+                            'dropout': config.dropout_keep, 'momentum': config.momentum, 'seed': config.seed }
     with open(f'train_rnn.json', 'w') as outfile:
         json.dump(log_dict, outfile)
 
