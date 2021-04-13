@@ -37,7 +37,7 @@ parser = argparse.ArgumentParser(description='PyTorch CIFAR10')
 #train,test arguments
 parser.add_argument('--train', action='store_true',help='train mode')
 parser.add_argument('--dataset', default=None, type=str,help='dataset choices = ["MNIST","CIFAR10"]')
-parser.add_argument('--batch_size', default=64, type=str,help='dataset choices = ["MNIST","CIFAR10"]')
+parser.add_argument('--batch_size', default=64, type=int,help='dataset choices = ["MNIST","CIFAR10"]')
 parser.add_argument('--epoch', default=20, type=int, help='number of epochs tp train for')
 parser.add_argument('--gamma', default=0.5, type=int, help='gamma for learning rate scheduler')
 parser.add_argument('--lr', default=0.0005, type=float, help='learning rate')
@@ -46,6 +46,7 @@ parser.add_argument('--weight_decay', default=0.0, type=float, help='weight deca
 parser.add_argument('--test', action='store_true', help='test mode, model is required')
 parser.add_argument('--model_path', type=str,help='path to saved model or .pth file, required when resume training')
 parser.add_argument('--seed', default=42, type=int, help='seed for random')
+parser.add_argument('--rho', default=0.05, type=float, help='rho for SAM')
 
 args = parser.parse_args()
 
@@ -164,7 +165,7 @@ if args.train:
 
     #sam
     base_optimizer = torch.optim.SGD
-    optimizer = SAM(model.parameters(), base_optimizer, lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
+    optimizer = SAM(model.parameters(), base_optimizer, rho=args.rho ,lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
     
     criterion = nn.CrossEntropyLoss()
 
