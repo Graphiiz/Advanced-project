@@ -54,7 +54,7 @@ class TextRNN(nn.Module):
     def reduce_lr(self):
         print("Reducing LR")
         for g in self.optimizer.param_groups:
-            g['lr'] = g['lr'] / 2
+            g['lr'] = g['lr'] / 10
                 
     def run_epoch(self, train_iterator, val_iterator, test_iterator, epoch):
         train_losses = 0
@@ -70,6 +70,10 @@ class TextRNN(nn.Module):
 
         # if (epoch == int(self.config.max_epochs/4)) or (epoch == int(2*self.config.max_epochs/4)) or (epoch == int(3*self.config.max_epochs/4)):
         #     self.reduce_lr()
+
+        if (epoch % 25 == 0):
+            self.reduce_lr()
+            print('reduce')
             
         for i, batch in enumerate(train_iterator):
             self.optimizer.zero_grad()
