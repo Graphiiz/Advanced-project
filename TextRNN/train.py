@@ -77,7 +77,7 @@ if __name__=='__main__':
 
         #tracked_val = val_acc
 
-        #scheduler.step()
+        scheduler.step()
 
     log_dict = {'train_loss': train_losses, 'test_loss': test_losses, 'val_loss': val_losses, 'val_acc': val_accuracies,
                             'train_acc': train_accuracies, 'test_acc': test_accuracies, 'best_test_acc': max(test_accuracies),
