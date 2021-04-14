@@ -22,7 +22,7 @@ import glob
 
 #import relative .py files
 import dataset
-import model
+import model_seq
 
 #json
 import json
@@ -172,7 +172,7 @@ if args.train:
     rhos = [0.01,0.02,0.03,0.04,0.05]
 
     for rho in rhos:
-        model = model.create_model('VGG16').to(device)
+        model = model_seq.create_model('VGG16').to(device)
 
         #sam
         base_optimizer = torch.optim.SGD
