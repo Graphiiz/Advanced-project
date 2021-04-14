@@ -39,7 +39,7 @@ parser.add_argument('--train', action='store_true',help='train mode')
 parser.add_argument('--dataset', default=None, type=str,help='dataset choices = ["MNIST","CIFAR10"]')
 parser.add_argument('--batch_size', default=128, type=int,help='dataset choices = ["MNIST","CIFAR10"]')
 parser.add_argument('--epoch', default=100, type=int, help='number of epochs tp train for')
-parser.add_argument('--gamma', default=0.1, type=int, help='gamma for learning rate scheduler')
+parser.add_argument('--gamma', default=0.1, type=float, help='gamma for learning rate scheduler')
 parser.add_argument('--patience', default=20, type=int, help='period of iterations which has no improvement before update lr')
 parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
 parser.add_argument('--momentum', default=0.9, type=float, help='momentum')
@@ -171,7 +171,7 @@ if args.train:
 
     #sam
     base_optimizer = torch.optim.SGD
-    optimizer = SAM(model.parameters(), base_optimizer, rho=args.rho,lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
+    optimizer = SAM(model.parameters(), base_optimizer, rho=args.rho, lr=args.lr, momentum=args.momentum, weight_decay=args.weight_decay)
 
     criterion = nn.CrossEntropyLoss()
 
@@ -182,7 +182,7 @@ if args.train:
     # scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=args.gamma, patience=args.patience, threshold=0.0001, 
     #                                                 threshold_mode='rel', cooldown=0, min_lr=0, eps=1e-08, verbose=False)
 
-    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=200)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epoch)
 
     num_epoch = args.epoch
 
@@ -208,7 +208,9 @@ if args.train:
             count_reduce += 1
 
     log_dict = {'train_loss': train_loss_log, 'test_loss': test_loss_log,
-                            'train_acc': train_acc_log, 'test_acc': test_acc_log, 'best_test_acc': max(test_acc_log)}
+                            'train_acc': train_acc_log, 'test_acc': test_acc_log, 'best_test_acc': max(test_acc_log),
+                            'batch_size': args.batch_size, 'lr': args.lr, 'momentum': args.momentum, 'wd': args.weight_decay,
+                            'seed': args.seed, 'gamma': args.gamma, 'scheduler': 'CosineAnnealing', 'epoch': args.epoch, 'rho': args.rho}
     with open(f'train_vgg16_sam.json', 'w') as outfile:
         json.dump(log_dict, outfile)
     
