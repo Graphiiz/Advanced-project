@@ -169,7 +169,7 @@ trainloader = dataset.create_trainset(args.dataset,args.batch_size)
 testloader = dataset.create_testset(args.dataset)
 
 if args.train:
-    rhos = [0.01,0.02,0.03,0.04,0.05]
+    rhos = [0.02,0.03,0.04,0.05]
 
     for rho in rhos:
         model = model_seq.create_model('VGG16').to(device)
