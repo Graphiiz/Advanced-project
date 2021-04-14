@@ -38,9 +38,9 @@ parser = argparse.ArgumentParser(description='PyTorch CIFAR10')
 parser.add_argument('--train', action='store_true',help='train mode')
 parser.add_argument('--dataset', default=None, type=str,help='dataset choices = ["MNIST","CIFAR10"]')
 parser.add_argument('--batch_size', default=64, type=int,help='dataset choices = ["MNIST","CIFAR10"]')
-parser.add_argument('--epoch', default=20, type=int, help='number of epochs tp train for')
-parser.add_argument('--gamma', default=0.5, type=int, help='gamma for learning rate scheduler')
-parser.add_argument('--lr', default=0.0005, type=float, help='learning rate')
+parser.add_argument('--epoch', default=100, type=int, help='number of epochs tp train for')
+parser.add_argument('--gamma', default=0.1, type=float, help='gamma for learning rate scheduler')
+parser.add_argument('--lr', default=0.01, type=float, help='learning rate')
 parser.add_argument('--momentum', default=0.9, type=float, help='momentum')
 parser.add_argument('--weight_decay', default=0.0, type=float, help='weight decay factor for sgd')
 parser.add_argument('--test', action='store_true', help='test mode, model is required')
@@ -173,7 +173,7 @@ if args.train:
     testloader = dataset.create_testset(args.dataset)
 
     #scheduler keep track of base_optimizer in SAM object
-    #scheduler = optim.lr_scheduler.MultiStepLR(optimizer.base_optimizer, milestones=[2,5,8,12], gamma=args.gamma)
+    scheduler = optim.lr_scheduler.StepLR(optimizer,step_size=10, gamma=args.gamma)
 
     num_epoch = args.epoch
 
@@ -189,22 +189,22 @@ if args.train:
         test_loss_log.append(test_loss)
         train_acc_log.append(train_acc)
         test_acc_log.append(test_acc)
-        #scheduler.step()
+        scheduler.step()
 
-        if epoch == 2:
-            for g in optimizer.base_optimizer.param_groups:
-                g['lr'] = 0.0002
-        elif epoch == 5:
-            for g in optimizer.base_optimizer.param_groups:
-                g['lr'] = 0.0001
-        elif epoch == 8:
-            for g in optimizer.base_optimizer.param_groups:
-                g['lr'] = 0.00005
-        elif epoch == 12:
-            for g in optimizer.base_optimizer.param_groups:
-                g['lr'] = 0.00001
-        else:
-            pass  
+        # if epoch == 2:
+        #     for g in optimizer.base_optimizer.param_groups:
+        #         g['lr'] = 0.0002
+        # elif epoch == 5:
+        #     for g in optimizer.base_optimizer.param_groups:
+        #         g['lr'] = 0.0001
+        # elif epoch == 8:
+        #     for g in optimizer.base_optimizer.param_groups:
+        #         g['lr'] = 0.00005
+        # elif epoch == 12:
+        #     for g in optimizer.base_optimizer.param_groups:
+        #         g['lr'] = 0.00001
+        # else:
+        #     pass  
 
     log_dict = {'train_loss': train_loss_log, 'test_loss': test_loss_log,
                             'train_acc': train_acc_log, 'test_acc': test_acc_log, 'best_test_acc': max(test_acc_log),
