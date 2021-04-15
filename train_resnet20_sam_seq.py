@@ -56,7 +56,6 @@ current_acc = 0 #for ReduceLROnPlateau scheduler
 
 max_iter = 64000 #end training at 64000 iterations
 
-count_iter = 0 #count iteration to control training time
 
 #function
 
@@ -178,7 +177,7 @@ trainloader = dataset.create_trainset(args.dataset,args.batch_size)
 testloader = dataset.create_testset(args.dataset)
 
 if args.train:
-    rhos = [0.005,0.01,0.02,0.03,0.04,0.05,0.075,0.1]
+    rhos = [0.005,0.01,0.02,0.03,0.04,0.05]
 
     for rho in rhos:
 
@@ -201,6 +200,7 @@ if args.train:
         test_acc_log = []
         
         epoch = 0
+        count_iter = 0 #count iteration to control training time
 
         while True:
             train_loss, train_acc = train(epoch,scheduler)
