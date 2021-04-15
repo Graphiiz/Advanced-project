@@ -47,6 +47,7 @@ parser.add_argument('--test', action='store_true', help='test mode, model is req
 parser.add_argument('--model_path', type=str,help='path to saved model or .pth file, required when resume training')
 parser.add_argument('--seed', default=42, type=int, help='seed for random')
 parser.add_argument('--rho', default=0.05, type=float, help='rho for SAM')
+parser.add_argument('--max_iter', default=64000, type=int, help='max iterations')
 
 args = parser.parse_args()
 
@@ -54,7 +55,7 @@ best_acc = 0
 
 current_acc = 0 #for ReduceLROnPlateau scheduler
 
-max_iter = 64000 #end training at 64000 iterations
+max_iter = args.max_iter #end training at 64000 iterations
 
 
 #function
@@ -102,7 +103,7 @@ def train(epoch,scheduler):
         scheduler.step()
         count_iter += 1
         count_special += 1
-        if count_iter == 64000:
+        if count_iter == max_iter:
             #when iter = 64000 we run through a subset of trainloader != len(trainloader)
             return train_loss/count_special, correct/total
 
@@ -177,7 +178,7 @@ trainloader = dataset.create_trainset(args.dataset,args.batch_size)
 testloader = dataset.create_testset(args.dataset)
 
 if args.train:
-    rhos = [0.005,0.01,0.02,0.03,0.04,0.05]
+    rhos = [0.01,0.02,0.03,0.04,0.05,0.75,0.1]
 
     for rho in rhos:
 
@@ -212,7 +213,7 @@ if args.train:
 
             epoch += 1
 
-            if count_iter == 64000:
+            if count_iter == max_iter:
                 break
 
 
