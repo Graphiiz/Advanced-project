@@ -12,5 +12,5 @@ class Config(object):
     max_sen_len = None # Sequence length for RNN
     dropout_keep = 0.4
     momentum = 0.9
-    seed = 1
+    seed = 5
 
