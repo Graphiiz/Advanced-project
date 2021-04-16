@@ -31,57 +31,62 @@ if __name__=='__main__':
         test_file = sys.argv[2]
     
     w2v_file = '/ext3/Text-Classification-Models-Pytorch/data/glove.840B.300d.txt'
-
-    initialize(seed=config.seed)
     
-    dataset = Dataset(config)
-    dataset.load_data(w2v_file, train_file, test_file)
-    
-    # Create Model with specified optimizer and loss function
-    ##############################################################
-    model = RCNN(config, len(dataset.vocab), dataset.word_embeddings)
-    if torch.cuda.is_available():
-        model.cuda()
-    model.train()
-    optimizer = optim.SGD(model.parameters(), lr=config.lr, momentum=config.momentum)
-    NLLLoss = nn.NLLLoss()
-    model.add_optimizer(optimizer)
-    model.add_loss_op(NLLLoss)
-    ##############################################################
-    
-    train_losses = []
-    train_accuracies = []
+    seeds = [1,2,3,4,5] 
+    for seed in seeds:
 
-    val_losses = []
-    val_accuracies = []
+        initialize(seed=seed)
+        
+        dataset = Dataset(config)
+        dataset.load_data(w2v_file, train_file, test_file)
+        
+        # Create Model with specified optimizer and loss function
+        ##############################################################
+        model = RCNN(config, len(dataset.vocab), dataset.word_embeddings)
+        if torch.cuda.is_available():
+            model.cuda()
+        model.train()
+        optimizer = optim.SGD(model.parameters(), lr=config.lr, momentum=config.momentum)
+        NLLLoss = nn.NLLLoss()
+        model.add_optimizer(optimizer)
+        model.add_loss_op(NLLLoss)
+        ##############################################################
+        
+        train_losses = []
+        train_accuracies = []
 
-    test_accuracies = []
-    test_losses = []
+        val_losses = []
+        val_accuracies = []
 
-    tracked_val = 0
-    
-    for i in range(config.max_epochs):
-        print ("Epoch: {}".format(i))
-        train_loss, train_acc, val_loss, val_acc, test_loss, test_acc = model.run_epoch(dataset.train_iterator, dataset.val_iterator, dataset.test_iterator, i)
+        test_accuracies = []
+        test_losses = []
 
-        train_losses.append(float(train_loss)) #cast float into json saveable
-        train_accuracies.append(float(train_acc))
+        tracked_val = 0
+        
+        for i in range(config.max_epochs):
+            print ("Epoch: {}".format(i))
+            train_loss, train_acc, val_loss, val_acc, test_loss, test_acc = model.run_epoch(dataset.train_iterator, dataset.val_iterator, dataset.test_iterator, i)
 
-        val_losses.append(float(val_loss))
-        val_accuracies.append(float(val_acc))
-       
-        test_losses.append(float(test_loss))
-        test_accuracies.append(float(test_acc))
+            train_losses.append(float(train_loss)) #cast float into json saveable
+            train_accuracies.append(float(train_acc))
 
-        #tracked_val = val_acc
+            val_losses.append(float(val_loss))
+            val_accuracies.append(float(val_acc))
+        
+            test_losses.append(float(test_loss))
+            test_accuracies.append(float(test_acc))
 
-        #scheduler.step(tracked_val)
+            #tracked_val = val_acc
 
-    log_dict = {'train_loss': train_losses, 'test_loss': test_losses, 'val_loss': val_losses, 'val_acc': val_accuracies,
-                            'train_acc': train_accuracies, 'test_acc': test_accuracies, 'best_test_acc': max(test_accuracies),
-                            'best_val_acc': max(val_accuracies)}
-    with open(f'train_rcnn.json', 'w') as outfile:
-        json.dump(log_dict, outfile)
+            #scheduler.step(tracked_val)
+
+        log_dict = {'train_loss': train_losses, 'test_loss': test_losses, 'val_loss': val_losses, 'val_acc': val_accuracies,
+                                'train_acc': train_accuracies, 'test_acc': test_accuracies, 'best_test_acc': max(test_accuracies),
+                                'best_val_acc': max(val_accuracies), 'hidden_layers': config.hidden_layers, 'hidden_size': config.hidden_size,
+                                'epoch': config.max_epochs, 'lr': config.lr, 'batch_size': config.batch_size, 'max_sen_len': 'None',
+                                'dropout': config.dropout_keep, 'momentum': config.momentum, 'seed': seed }
+        with open(f'train_rcnn{seed}.json', 'w') as outfile:
+            json.dump(log_dict, outfile)
 
     # train_acc = evaluate_model(model, dataset.train_iterator)
     # val_acc = evaluate_model(model, dataset.val_iterator)
