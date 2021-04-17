@@ -7,11 +7,11 @@ class Config(object):
     bidirectional = True
     output_size = 4
     max_epochs = 100
-    lr = 0.4
-    batch_size = 128
+    lr = 0.3
+    batch_size = 64
     max_sen_len = 50 # Sequence length for RNN
     dropout_keep = 0.5
     momentum = 0.9
     seed = 1
     rho = 0.05
-    weight_decay = 5e-4
+    weight_decay = 0.0
