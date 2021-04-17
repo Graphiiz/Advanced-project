@@ -86,7 +86,7 @@ if __name__=='__main__':
                                 'best_val_acc': max(val_accuracies), 'hidden_layers': config.hidden_layers, 'hidden_size': config.hidden_size,
                                 'epoch': config.max_epochs, 'lr': config.lr, 'batch_size': config.batch_size, 'max_sen_len': config.max_sen_len,
                                 'dropout': config.dropout_keep, 'momentum': config.momentum, 'seed': seed }
-        with open(f'train_rnn_sgd{config.lr}.json', 'w') as outfile:
+        with open(f'train_rnn_sgd{seed}.json', 'w') as outfile:
             json.dump(log_dict, outfile)
 
     # train_acc = evaluate_model(model, dataset.train_iterator)
