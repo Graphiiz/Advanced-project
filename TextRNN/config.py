@@ -13,5 +13,5 @@ class Config(object):
     dropout_keep = 0.5
     momentum = 0.9
     seed = 1
-    rho = 0.05
+    rho = 0.03
     weight_decay = 0.0
